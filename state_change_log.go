@@ -34,10 +34,8 @@ func GenerateReferenceKey(model interface{}, scope *gorm.DB) string {
 		if !field.PrimaryKey {
 			continue
 		}
-		var value, ok = field.ValueOf(reflect.ValueOf(model))
-		if ok {
-			primaryValues = append(primaryValues, fmt.Sprint(value))
-		}
+		var value, _ = field.ValueOf(reflect.ValueOf(model))
+		primaryValues = append(primaryValues, fmt.Sprint(value))
 	}
 
 	return strings.Join(primaryValues, "::")
