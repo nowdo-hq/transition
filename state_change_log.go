@@ -48,7 +48,10 @@ func GetStateChangeLogs(model interface{}, db *gorm.DB) []StateChangeLog {
 		scope      = db.Model(model)
 	)
 
-	scope.Statement.Parse(model)
+	if err := scope.Statement.Parse(model); err != nil {
+		db.Logger.Error(context.Background(), err.Error())
+		return changelogs
+	}
 	db.Where("refer_table = ? AND refer_id = ?", scope.Statement.Table, GenerateReferenceKey(model, scope)).Find(&changelogs)
 
 	return changelogs
@@ -61,7 +64,10 @@ func GetLastStateChange(model interface{}, db *gorm.DB) *StateChangeLog {
 		scope     = db.Model(model)
 	)
 
-	scope.Statement.Parse(model)
+	if err := scope.Statement.Parse(model); err != nil {
+		db.Logger.Error(context.Background(), err.Error())
+		return nil
+	}
 	db.Where("refer_table = ? AND refer_id = ?", scope.Statement.Table, GenerateReferenceKey(model, scope)).Last(&changelog)
 	if changelog.To == "" {
 		return nil
