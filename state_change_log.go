@@ -15,15 +15,12 @@ import (
 
 // StateChangeLog a model that used to keep state change logs
 type StateChangeLog struct {
-	ID         uint `gorm:"primarykey"`
+	gorm.Model
 	ReferTable string
 	ReferID    string
 	From       string
 	To         string
 	Note       string `sql:"size:1024"`
-	CreatedAt  int64
-	UpdatedAt  int64
-	DeletedAt  *int64 `sql:"index"`
 	audited.AuditedModel
 }
 
