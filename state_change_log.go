@@ -1,6 +1,7 @@
 package transition
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"strings"
@@ -14,12 +15,15 @@ import (
 
 // StateChangeLog a model that used to keep state change logs
 type StateChangeLog struct {
-	gorm.Model
+	ID         uint `gorm:"primarykey"`
 	ReferTable string
 	ReferID    string
 	From       string
 	To         string
 	Note       string `sql:"size:1024"`
+	CreatedAt  int64
+	UpdatedAt  int64
+	DeletedAt  *int64 `sql:"index"`
 	audited.AuditedModel
 }
 
