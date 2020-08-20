@@ -75,7 +75,7 @@ func (sm *StateMachine) Trigger(name string, value Stater, tx *gorm.DB, notes ..
 	)
 
 	if tx != nil {
-		newTx = tx
+		newTx = tx.Session(&gorm.Session{WithConditions: true})
 	}
 
 	if stateWas == "" {
